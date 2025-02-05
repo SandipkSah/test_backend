@@ -6,7 +6,7 @@ trigger:
 variables:
   azureServiceConnection: 'essencif.ai_resources'
   vmImageName: 'ubuntu-latest'
-  dockerImageName: 'essencifai-backend'  # Project-specific name
+  imageRegistry: 'essencifai-backend'  # Project-specific name
   containerRegistry: 'container-registry'  # Full Azure Container Registry URL
   
 
@@ -30,7 +30,7 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: '$(containerRegistry)'
-        repository: '$(dockerImageName)'
+        repository: '$(imageRegistry)'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: '$(Build.BuildId)'
 
@@ -47,7 +47,7 @@ stages:
   - deployment: DevelopmentDeploymentJob
     pool:
       vmImage: $(vmImageName)
-    environment: 'developmentContainer'
+    environment: $(AZURE_COMPILATION_ENV)
     strategy:
       runOnce:
         deploy:
@@ -56,7 +56,7 @@ stages:
             inputs:
               azureSubscription: $(azureServiceConnection)
               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-              imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+              containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
 # - stage: DeployDevelopment
 #   displayName: 'Deploy Web App Development'
@@ -79,7 +79,7 @@ stages:
 #             inputs:
 #               azureSubscription: $(azureServiceConnection)
 #               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
 
 
@@ -104,7 +104,7 @@ stages:
 #             inputs:
 #               azureSubscription: $(azureServiceConnection)
 #               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
 # - stage: DeployProduction
 #   displayName: 'Deploy Web App Production'
@@ -127,6 +127,6 @@ stages:
 #             inputs:
 #               azureSubscription: $(azureServiceConnection)
 #               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
                
