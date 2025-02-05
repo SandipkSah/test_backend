@@ -1,0 +1,27 @@
+Owner;Request;Prompt;Engine;Max_tokens;temperature;top_p;n;stream;presence_penalty;frequency_penalty;user
+Default;SWOT (5 Punkte, 1000 Zeichen, temperature 0,25);"Nutze das ausgewählte Dokument um damit eine detaillierte SWOT Analyse fuer das Unternehmens im aktuellen Marktumfeld zu machen. Strukturiere die Antwort so, dass du die 4 Abschnitte ""1. Stärken"", ""2. Schwächen"", ""3. Chancen"" und ""4. Risiken"" jeweils mit der ueberschrift beginnst. Nutze fuer die Ausformulierung der Bereiche eine prägnante Form. Gebe fuer jeden Bereich die 5 wichtigsten Punkte mit Titel und einer kurzen Erklärung an und verweise dabei auf die Textstellen im Ursprungsdokument mit den Seitenzahlen. Nutze pro Bereich etwa 1000 Zeichen. ";gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Default;SWOT (Text, 2000 Zeichen);"Nutze das ausgewählte Dokument um damit eine detaillierte SWOT Analyse fuer das Unternehmens im aktuellen Marktumfeld zu machen. Strukturiere die Antwort so, dass du die 4 Abschnitte ""1. Stärken"", ""2. Schwächen"", ""3. Chancen"" und ""4. Risiken"" jeweils mit der ueberschrift beginnst. Nutze fuer die Ausformulierung der Bereiche eine beschreibende Textform und sei dabei möglichst präzise. Die Texte sollen pro Bereich nicht länger als 2000 Zeichen sein.";gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Default;SWOT (5 Punkte, 1000 Zeichen, temperature 1);"Nutze das ausgewählte Dokument um damit eine detaillierte SWOT Analyse fuer das Unternehmens im aktuellen Marktumfeld zu machen. Strukturiere die Antwort so, dass du die 4 Abschnitte ""1. Stärken"", ""2. Schwächen"", ""3. Chancen"" und ""4. Risiken"" jeweils mit der ueberschrift beginnst. Nutze fuer die Ausformulierung der Bereiche eine prägnante Form. Gebe fuer jeden Bereich die 5 wichtigsten Punkte mit Titel und einer kurzen Erklärung an und verweise dabei auf die Textstellen im Ursprungsdokument mit den Seitenzahlen. Nutze pro Bereich etwa 1000 Zeichen. ";gpt-4o;4000;1.0;0.85;1;False;0.25;0.25;Essencifai
+Default;SWOT (5 Punkte, 1000 Zeichen, top_p 0);"Nutze das ausgewählte Dokument um damit eine detaillierte SWOT Analyse fuer das Unternehmens im aktuellen Marktumfeld zu machen. Strukturiere die Antwort so, dass du die 4 Abschnitte ""1. Stärken"", ""2. Schwächen"", ""3. Chancen"" und ""4. Risiken"" jeweils mit der ueberschrift beginnst. Nutze fuer die Ausformulierung der Bereiche eine prägnante Form. Gebe fuer jeden Bereich die 5 wichtigsten Punkte mit Titel und einer kurzen Erklärung an und verweise dabei auf die Textstellen im Ursprungsdokument mit den Seitenzahlen. Nutze pro Bereich etwa 1000 Zeichen. ";gpt-4o;4000;0.25;0.0;1;False;0.25;0.25;Essencifai
+Acatis;Operational Metrics; Is the operational performance on track?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Which KIPs;Which KPIs are being monitored?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Financial KPIs;Which financial metrics are being monitored?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Financially on track;iS the company meeting or exceeding its financial targets?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Margins;Is a margin expansion on the way?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Margin reasons;What factors drive margin development?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Competitors;Who are the company's direct competitors?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Peer comparison;Is the company performing better than its competition?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Market share;Is the company gaining market share?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Cooperations;Does the company have important cooperation partners?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Main Partners;Who are major cooperation partners?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;New Products;Are there key product launches to be expected?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Breakthroughs;Are there any wow developmentes in the company?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Cash spend;How does the company spend its cash?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;Types of cash spend;Is cash spending mostly for operating assets, acquisitions, stock buy-backs or dividends?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;capital increase;Is a capital increase being planned?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;cash change;Is the financial cash position improving or deteriorating?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;litigations;Are there any legal or regulatory challenges facing the company?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;write-offs;Have there been major write-offs recently?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;what write-offs;If yes, what has been written off?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;permanent write-offs;Is the write-off permanent?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
+Acatis;spin-offs;Is there a plan for acquisitions or spin-offs?;gpt-4o;4000;0.25;0.85;1;False;0.25;0.25;Essencifai
