@@ -7,7 +7,6 @@ variables:
   azureServiceConnection: 'essencif.ai_resources'
   vmImageName: 'ubuntu-latest'
   dockerImageName: 'essencifai-backendImmage'  # Project-specific name
-  # containerRegistry: 'essencifaibackendregistry.azurecr.io'  # Full Azure Container Registry URL
   containerRegistry: 'container-registry'  # Full Azure Container Registry URL
   
 
@@ -31,7 +30,8 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: '$(containerRegistry)'
-        repository: 'essencifaiBackendRegistry'
+        # repository: 'essencifaiBackendRegistry'
+        repository: '$(dockerImageName)'
         imageName: '$(dockerImageName)'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: '$(Build.BuildId)'
@@ -101,50 +101,50 @@ stages:
               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
 
-- stage: DeployTesting
-  displayName: 'Deploy Web App Testing'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
-  variables:
-    DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-testing'
-    AZURE_COMPILATION_ENV: 'testing'
+# - stage: DeployTesting
+#   displayName: 'Deploy Web App Testing'
+#   dependsOn: Build
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
+#   variables:
+#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-testing'
+#     AZURE_COMPILATION_ENV: 'testing'
 
-  jobs:
-  - deployment: TestingDeploymentJob
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'testing'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebAppContainer@1
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-              imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#   jobs:
+#   - deployment: TestingDeploymentJob
+#     pool:
+#       vmImage: $(vmImageName)
+#     environment: 'testing'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureWebAppContainer@1
+#             inputs:
+#               azureSubscription: $(azureServiceConnection)
+#               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
 
-- stage: DeployProduction
-  displayName: 'Deploy Web App Production'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  variables:
-    DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-production'
-    AZURE_COMPILATION_ENV: 'production'
+# - stage: DeployProduction
+#   displayName: 'Deploy Web App Production'
+#   dependsOn: Build
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#   variables:
+#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-production'
+#     AZURE_COMPILATION_ENV: 'production'
 
-  jobs:
-  - deployment: ProductionDeploymentJob
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebAppContainer@1
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-              imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#   jobs:
+#   - deployment: ProductionDeploymentJob
+#     pool:
+#       vmImage: $(vmImageName)
+#     environment: 'production'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureWebAppContainer@1
+#             inputs:
+#               azureSubscription: $(azureServiceConnection)
+#               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
 
                
