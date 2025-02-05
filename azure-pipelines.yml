@@ -6,7 +6,7 @@ trigger:
 variables:
   azureServiceConnection: 'essencif.ai_resources'
   vmImageName: 'ubuntu-latest'
-  dockerImageName: 'essencifai-backend'  # Project-specific name
+  dockerImageName: 'essencifai-backendImmage'  # Project-specific name
   # containerRegistry: 'essencifaibackendregistry.azurecr.io'  # Full Azure Container Registry URL
   containerRegistry: 'container-registry'  # Full Azure Container Registry URL
   
@@ -32,6 +32,7 @@ stages:
         command: buildAndPush
         containerRegistry: '$(containerRegistry)'
         repository: 'essencifaiBackendRegistry'
+        imageName: '$(dockerImageName)'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: '$(Build.BuildId)'
 
