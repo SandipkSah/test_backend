@@ -1,5 +1,5 @@
 trigger:
-- master
+- main
 - stage
 - try_docker
 
@@ -31,8 +31,8 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: '$(containerRegistry)'
+        repository: 'essencifaiBackendRegistry'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        imageName: '$(dockerImageName)'
         tags: '$(Build.BuildId)'
 
     # # Build the Docker image with the correct repository and tag
@@ -54,33 +54,33 @@ stages:
     #     imageName: '$(dockerImageName)'
     #     tags: '$(Build.BuildId)'
 
-- stage: DeployDevelopment
-  displayName: 'Deploy Web App Development'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
-  variables:
-    DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-development'
-    AZURE_COMPILATION_ENV: 'development'
+# - stage: DeployDevelopment
+#   displayName: 'Deploy Web App Development'
+#   dependsOn: Build
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
+#   variables:
+#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-development'
+#     AZURE_COMPILATION_ENV: 'development'
 
-  jobs:
-  - deployment: DevelopmentDeploymentJob
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'development'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebAppContainer@1
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-              imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
+#   jobs:
+#   - deployment: DevelopmentDeploymentJob
+#     pool:
+#       vmImage: $(vmImageName)
+#     environment: 'development'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureWebAppContainer@1
+#             inputs:
+#               azureSubscription: $(azureServiceConnection)
+#               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+#               imageName: $(containerRegistry)/$(dockerImageName):$(Build.BuildId)
 
 - stage: DeployDevelopmentContainer
   displayName: 'Deploy Web App Development'
   dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/try_docker'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-development-container'
     AZURE_COMPILATION_ENV: 'developmentContainer'
