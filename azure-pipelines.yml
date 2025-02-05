@@ -47,7 +47,7 @@ stages:
   - deployment: DevelopmentDeploymentJob
     pool:
       vmImage: $(vmImageName)
-    environment: $(AZURE_COMPILATION_ENV)
+    environment: 'developmentContainer'
     strategy:
       runOnce:
         deploy:
