@@ -90,7 +90,7 @@ stages:
   - deployment: DevelopmentDeploymentJob
     pool:
       vmImage: $(vmImageName)
-    environment: 'development'
+    environment: 'developmentContainer'
     strategy:
       runOnce:
         deploy:
