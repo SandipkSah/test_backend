@@ -11,8 +11,7 @@ COPY . /app
 RUN pip install -r requirements.txt 
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 8080
 
-# Command to run the application using Hypercorn
-CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8000", "--log-level", "debug"]
-
+# Command to run the application using Hypercorn with timeout set to 300 seconds
+CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8080", "--log-level", "debug", "--timeout", "300"]
