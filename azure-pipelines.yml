@@ -82,7 +82,6 @@ stages:
 #               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
 
-
 # - stage: DeployTesting
 #   displayName: 'Deploy Web App Testing'
 #   dependsOn: Build
