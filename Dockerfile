@@ -8,11 +8,11 @@ WORKDIR /app
 COPY . /app
 
 # Install dependencies
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install -r requirements.txt 
 
 # Expose the port the app runs on
-EXPOSE 8080
+EXPOSE 8000
 
 # Command to run the application using Hypercorn
-CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8080", "--log-level", "debug"]
+CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8000", "--log-level", "debug"]
 
