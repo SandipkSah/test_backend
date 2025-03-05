@@ -8,6 +8,7 @@ variables:
   vmImageName: 'ubuntu-latest'
   imageRegistry: 'essencifai-backend'  # Project-specific name
   containerRegistry: 'container-registry'  # Full Azure Container Registry URL
+  # containerRegistry: 'essencifaibackendregistry.azurecr.io'  # Full Azure Container Registry URL
   
 
 stages:
@@ -35,6 +36,7 @@ stages:
         tags: '$(Build.BuildId)'
 
 
+
 - stage: DeployDevelopmentContainer
   displayName: 'Deploy Web App Development'
   dependsOn: Build
@@ -58,74 +60,50 @@ stages:
               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
               containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
 
-# - stage: DeployDevelopment
-#   displayName: 'Deploy Web App Development'
+
+
+- stage: Deploy
+  displayName: Deploy to App Service
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+    DEPLOYMENT_APP_SERVICE_CONTAINER: 'test-backend-container'
+    AZURE_COMPILATION_ENV: 'developmentContainer'
+
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: AzureRmWebAppDeployment@4
+		  inputs:
+		    ConnectionType: 'AzureRM'
+		    azureSubscription: $(azureServiceConnection)
+		    appType: 'webAppContainer'
+		    WebAppName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+		    DockerNamespace: 'essencifaibackendregistry.azurecr.io'
+		    DockerRepository: 'essencifai-backend:221'
+
+
+# - stage: DeploytestingContainer
+#   displayName: 'Deploy Web App testting'
 #   dependsOn: Build
-#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 #   variables:
-#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-development'
-#     AZURE_COMPILATION_ENV: 'development'
+#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'test-backend-container'
+#     AZURE_COMPILATION_ENV: 'developmentContainer'
 
 #   jobs:
 #   - deployment: DevelopmentDeploymentJob
 #     pool:
 #       vmImage: $(vmImageName)
-#     environment: 'development'
+#     environment: 'testingContainer'
 #     strategy:
 #       runOnce:
 #         deploy:
 #           steps:
 #           - task: AzureWebAppContainer@1
 #             inputs:
-#               azureSubscription: $(azureServiceConnection)
+#               azureSubscription: 
 #               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
-
-
-# - stage: DeployTesting
-#   displayName: 'Deploy Web App Testing'
-#   dependsOn: Build
-#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/stage'))
-#   variables:
-#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-testing'
-#     AZURE_COMPILATION_ENV: 'testing'
-
-#   jobs:
-#   - deployment: TestingDeploymentJob
-#     pool:
-#       vmImage: $(vmImageName)
-#     environment: 'testing'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebAppContainer@1
-#             inputs:
-#               azureSubscription: $(azureServiceConnection)
-#               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
-
-# - stage: DeployProduction
-#   displayName: 'Deploy Web App Production'
-#   dependsOn: Build
-#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-#   variables:
-#     DEPLOYMENT_APP_SERVICE_CONTAINER: 'essencifai-backend-production'
-#     AZURE_COMPILATION_ENV: 'production'
-
-#   jobs:
-#   - deployment: ProductionDeploymentJob
-#     pool:
-#       vmImage: $(vmImageName)
-#     environment: 'production'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebAppContainer@1
-#             inputs:
-#               azureSubscription: $(azureServiceConnection)
-#               appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-#               imageName: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
-
-               
+#               containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
