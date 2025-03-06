@@ -19,5 +19,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Expose ports
 EXPOSE 80
 
+
 # Start Nginx and the application
 CMD service nginx start && hypercorn app:app --bind 0.0.0.0:8080 --log-level debug --keep-alive 300
