@@ -20,4 +20,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
 # Start Nginx and the application
-CMD service nginx start && hypercorn app:app --bind 0.0.0.0:8080 --log-level debug --worker-timeout 300
+CMD service nginx start && hypercorn app:app --bind 0.0.0.0:8080 --log-level debug --keep-alive 300
