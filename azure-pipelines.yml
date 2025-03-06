@@ -8,7 +8,7 @@ variables:
   vmImageName: 'ubuntu-latest'
   imageRegistry: 'essencifai-backend'  # Project-specific name
   containerRegistry: 'container-registry'  # Full Azure Container Registry URL
-  # containerRegistry: 'essencifaibackendregistry.azurecr.io'  # Full Azure Container Registry URL
+  containerRegistryServerURL: 'essencifaibackendregistry.azurecr.io'  # Full Azure Container server URL
   
 
 stages:
@@ -63,12 +63,13 @@ stages:
               containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
               DockerNamespace: 'essencifaibackendregistry.azurecr.io'
               DockerRepository: $(imageRegistry):$(Build.BuildId)
+              
 
 
 - stage: DeploytestingContainer
   displayName: 'Deploy Web App testting'
   dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/test_1'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
     DEPLOYMENT_APP_SERVICE_CONTAINER: 'test-backend-container'
     AZURE_COMPILATION_ENV: 'developmentContainer'
@@ -92,10 +93,12 @@ stages:
               DockerNamespace: 'essencifaibackendregistry.azurecr.io'
               DockerRepository: $(imageRegistry):$(Build.BuildId)
 
+
+
 - stage: testing2Container
   displayName: 'testing2 deploy'
   dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/test_2'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
     DEPLOYMENT_APP_SERVICE_CONTAINER: 'test2-container'
     AZURE_COMPILATION_ENV: 'testing2Container'
@@ -104,25 +107,19 @@ stages:
   - deployment: DevelopmentDeploymentJob
     pool:
       vmImage: $(vmImageName)
-    environment: 'testingContainer'
+    environment: 'testing2Container'
     strategy:
       runOnce:
         deploy:
           steps:
-          # - task: AzureRmWebAppDeployment@4
-          #   inputs:
-          #     ConnectionType: 'AzureRM'
-          #     azureSubscription: $(azureServiceConnection)
-          #     appType: 'webAppContainer'
-          #     WebAppName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-          #     containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
-          #     DockerNamespace: 'essencifaibackendregistry.azurecr.io'
-          #     DockerRepository: $(imageRegistry):$(Build.BuildId)
-              ## Add the below snippet at the end of your pipeline
-          - task: AzureWebAppContainer@1
-            displayName: 'Azure Web App on Container Deploy'
+          - task: AzureRmWebAppDeployment@4
             inputs:
-              azureSubscription:  $(azureServiceConnection)
-              appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
-              containers: 'essencifaibackendregistry.azurecr.io/essencifai-backend:226'
+              ConnectionType: 'AzureRM'
+              azureSubscription: $(azureServiceConnection)
+              appType: 'webAppContainer'
+              WebAppName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+              containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
+              # DockerNamespace: 'essencifaibackendregistry.azurecr.io'
+              DockerNamespace: $(containerRegistryServerURL)
+              DockerRepository: $(imageRegistry):$(Build.BuildId)
 
