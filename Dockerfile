@@ -4,15 +4,20 @@ FROM python:3.12-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy the application files
 COPY . /app
 
 # Install dependencies
 RUN pip install -r requirements.txt 
 
-# Expose the port the app runs on
-EXPOSE 8080
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
 
-# Command to run the application using Hypercorn with timeout set to 300 seconds
-# CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8080", "--log-level", "debug", "--timeout", "300"]
-CMD ["hypercorn", "app:app", "--bind", "0.0.0.0:8080", "--log-level", "debug", "--worker-timeout", "300"]
+# Copy custom Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose ports
+EXPOSE 80
+
+# Start Nginx and the application
+CMD service nginx start && hypercorn app:app --bind 0.0.0.0:8080 --log-level debug --worker-timeout 300
