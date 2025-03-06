@@ -63,6 +63,7 @@ stages:
               containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
               DockerNamespace: 'essencifaibackendregistry.azurecr.io'
               DockerRepository: $(imageRegistry):$(Build.BuildId)
+              
 
 
 - stage: DeploytestingContainer
