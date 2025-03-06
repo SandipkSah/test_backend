@@ -1,7 +1,7 @@
 trigger:
 - main
-- stage
-- try_docker
+- test_1
+- test_2
 
 variables:
   azureServiceConnection: 'essencif.ai_resources'
@@ -68,7 +68,7 @@ stages:
 - stage: DeploytestingContainer
   displayName: 'Deploy Web App testting'
   dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/test_1'))
   variables:
     DEPLOYMENT_APP_SERVICE_CONTAINER: 'test-backend-container'
     AZURE_COMPILATION_ENV: 'developmentContainer'
@@ -91,3 +91,38 @@ stages:
               containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
               DockerNamespace: 'essencifaibackendregistry.azurecr.io'
               DockerRepository: $(imageRegistry):$(Build.BuildId)
+
+- stage: testing2Container
+  displayName: 'testing2 deploy'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/test_2'))
+  variables:
+    DEPLOYMENT_APP_SERVICE_CONTAINER: 'test2-container'
+    AZURE_COMPILATION_ENV: 'testing2Container'
+
+  jobs:
+  - deployment: DevelopmentDeploymentJob
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'testingContainer'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # - task: AzureRmWebAppDeployment@4
+          #   inputs:
+          #     ConnectionType: 'AzureRM'
+          #     azureSubscription: $(azureServiceConnection)
+          #     appType: 'webAppContainer'
+          #     WebAppName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+          #     containers: $(containerRegistry)/$(imageRegistry):$(Build.BuildId)
+          #     DockerNamespace: 'essencifaibackendregistry.azurecr.io'
+          #     DockerRepository: $(imageRegistry):$(Build.BuildId)
+              ## Add the below snippet at the end of your pipeline
+          - task: AzureWebAppContainer@1
+            displayName: 'Azure Web App on Container Deploy'
+            inputs:
+              azureSubscription:  $(azureServiceConnection)
+              appName: $(DEPLOYMENT_APP_SERVICE_CONTAINER)
+              containers: 'essencifaibackendregistry.azurecr.io/essencifai-backend:226'
+
