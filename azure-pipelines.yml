@@ -72,7 +72,7 @@ stages:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
     DEPLOYMENT_APP_SERVICE_CONTAINER: 'test-backend-container'
-    AZURE_COMPILATION_ENV: 'developmentContainer'
+    AZURE_COMPILATION_ENV: 'testingContainer'
 
   jobs:
   - deployment: DevelopmentDeploymentJob
@@ -107,7 +107,7 @@ stages:
   - deployment: DevelopmentDeploymentJob
     pool:
       vmImage: $(vmImageName)
-    environment: 'testing2Container'
+    environment: 'testing2'
     strategy:
       runOnce:
         deploy:
