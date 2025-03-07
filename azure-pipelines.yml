@@ -122,4 +122,3 @@ stages:
               # DockerNamespace: 'essencifaibackendregistry.azurecr.io'
               DockerNamespace: $(containerRegistryServerURL)
               DockerRepository: $(imageRegistry):$(Build.BuildId)
-
